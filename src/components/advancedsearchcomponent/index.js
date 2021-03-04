@@ -56,10 +56,9 @@ const advancedSearchFields = [
     "Proposal ID",
     "Asset Name",
     "Service Provider",
-    "Store Number / Name",
-    "Problem Type",
-    "Trade Type",
-    "Category Type"
+    "Store Number",
+    "Store Number",
+    "Location Name"
 ]
 
 const AdvancedSearchComponent = () => {
@@ -93,13 +92,14 @@ const AdvancedSearchComponent = () => {
                     }}
                     disableUnderline
                 >
-                    <MenuItem className={classes.menuItem} value="" disabled><b>Searched by:</b></MenuItem>
+                    <MenuItem className={classes.menuItem} value="" disabled><b>Search Within Results:</b></MenuItem>
                     <MenuItem className={classes.menuItem} value={1}><Radio color="primary" checked={searchByState===1} />{advancedSearchFields[0]}</MenuItem>
                     <MenuItem className={classes.menuItem} value={2}><Radio color="primary" checked={searchByState===2} />{advancedSearchFields[1]}</MenuItem>
                     <MenuItem className={classes.menuItem} value={3}><Radio color="primary" checked={searchByState===3} />{advancedSearchFields[2]}</MenuItem>
                     <MenuItem className={classes.menuItem} value={4}><Radio color="primary" checked={searchByState===4} />{advancedSearchFields[3]}</MenuItem>
-                    {/*<MenuItem className={classes.menuItem} value={5}><Radio color="primary" checked={searchByState===5} />{advancedSearchFields[4]}</MenuItem>
-                    <MenuItem className={classes.menuItem} value={6}><Radio color="primary" checked={searchByState===6} />{advancedSearchFields[5]}</MenuItem>*/}
+                    <MenuItem className={classes.menuItem} value="" disabled><b>Server Search by:</b></MenuItem>
+                    <MenuItem className={classes.menuItem} value={5}><Radio color="primary" checked={searchByState===5} />{advancedSearchFields[4]}</MenuItem>
+                    <MenuItem className={classes.menuItem} value={6}><Radio color="primary" checked={searchByState===6} />{advancedSearchFields[5]}</MenuItem>
                 </Select>
             </FormControl>
             <FormControl className={classes.search}>           

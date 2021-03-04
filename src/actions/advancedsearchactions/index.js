@@ -12,16 +12,9 @@ export const receiveSearchWOData = (data) => {
     return {type: types.RECEIVE_SEARCH_DATA, data: data};
 }
 
-/**
- * Search by ids:
- * 2 = Service Provider
- * 3 = Asset Type
- * 4 = Problem Type
- * 5 = Trade Type
- */
-
 export const fetchSearchData =  async (searchTerm, searchBy, token, userId) => {
-    const searchURL = "/search"
+
+    const searchURL = "/landing/search"
     const accessFetchToken = (tk) => {
         return tk.data
     }
@@ -31,21 +24,12 @@ export const fetchSearchData =  async (searchTerm, searchBy, token, userId) => {
     let accessToken = await accessFetchToken(token)
     let accessUserId = await accessFetchUserId(userId)
     let searchParams
-    switch (searchBy) {
-        case 2:
-            searchParams = `?serviceProvider=${searchTerm}`
-            break;
-        case 3:
-            searchParams = `?assetType=${searchTerm}`
-            break;
-        case 4:
-            searchParams = `?problemType=${searchTerm}`
-            break;  
+    switch (searchBy) { 
         case 5:
-            searchParams = `?tradeType=${searchTerm}`
+            searchParams = `?storeNumber=${searchTerm}`
             break;
         case 6:
-            searchParams = `?categoryType=${searchTerm}`
+            searchParams = `?locationName=${searchTerm}`
             break;                      
         default:
             break;

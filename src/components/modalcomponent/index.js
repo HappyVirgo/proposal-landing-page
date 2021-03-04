@@ -21,18 +21,26 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import FileViewer from 'react-file-viewer'
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 //File extension
 import fileExtension from 'file-extension';
+
+//File Viewer
+import FileViewer from 'react-file-viewer';
+
+//Log errors
+import { Logger } from "logging-library";
+
+//Fullscreen
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 //Date format
 import Moment from 'react-moment';
 
 //Helpers
 import {
-    getModalStyle
+    getModalStyle,
+    validateUrlExtension
 } from './helpers'
 
 
@@ -86,7 +94,10 @@ const useStyles = makeStyles((theme) => ({
     tableCell: {
         padding: '10px 5px !important',
         borderBottom: '1px solid #CCC !important'
-    }    
+    },
+    FullScreen: {
+        marginTop: "25px"
+    }   
 }));
 
 const ModalComponent = ({title, data, type}) => {
@@ -106,7 +117,6 @@ const ModalComponent = ({title, data, type}) => {
     };
 
     const handle = useFullScreenHandle();
-
     //Button variations
     const buttonWarranty = (
         <Button variant="text" color="secondary" className={classes.button}>
@@ -133,12 +143,9 @@ const ModalComponent = ({title, data, type}) => {
     let company
     let firstName
     let lastName
-    let typeOf
     let historyNote
     let phone
     let imageFile
-    let imageTitle
-    let referenceID
     let assetID
     let warrantyPeriod1
     let warrantyPeriod2
@@ -164,15 +171,13 @@ const ModalComponent = ({title, data, type}) => {
     let additionalNote
     let author
 
+
     const Empty = ""
     if(type==="document") {
-        description = data['type']?data['type']['description']:Empty
-        typeOf = data['type']?data['type']['type']:Empty
+        description = data?data['description']:Empty
         createdDate = data['createdAt']?data['createdAt']:Empty  
         updatedDate = data['updatedAt']?data['updatedAt']:Empty  
         imageFile = data['file']?data['file']:Empty  
-        imageTitle = data['documentId']?data['documentId']:Empty   
-        referenceID = data['referenceId']?data['referenceId']:Empty   
         createdDate = data['dateCreated']?data['dateCreated']:Empty
         updatedDate = data['dateUpdated']?data['dateUpdated']:Empty
         author = data['user']?data['user']:Empty
@@ -279,21 +284,26 @@ const ModalComponent = ({title, data, type}) => {
     )
     
     //Attachments
-    const onError = (e) => {
-        console.log(e)
-    }
+    const imageFolder = "photos/"
+    const documentFolder = "documents/"
+    
     const extension = fileExtension(imageFile)
     //STAGE env var to avoid CORS issues
-    typeOf = extension==="jpg" || extension==="png" || extension==="gif" || extension==="bmp" || extension==="jpeg"?'photo':'document'
+    //const imageURL = extension==="jpg" || extension==="png" || extension==="gif" || extension==="bmp" || extension==="jpeg" || extension==="xlsx"?"https://cors-anywhere.herokuapp.com/https://ecotrak-documents-production.s3.us-east-2.amazonaws.com/img/uploads/":"https://ecotrak-documents-production.s3.us-east-2.amazonaws.com/img/uploads/"
+    //PROD env var
+    const imageURL = "https://ecotrak-documents-production.s3.us-east-2.amazonaws.com/img/uploads/"
+    const url = validateUrlExtension(extension, imageFile, imageURL, imageFolder, documentFolder)
     
-    const imageURL = `https://ecotrak-documents-production.s3.us-east-2.amazonaws.com/img/uploads/${typeOf}s/`
-
+    const onError = (e) => {
+        Logger.logError(e, 'error in file-viewer');
+    }     
     const bodyAttachments = (
         <Grid style={modalStyle} className={classes.paper}>
-            <FullScreen handle={handle}>          
+            <h2 id="simple-modal-title">{description}</h2>
+            <FullScreen handle={handle}>         
                 <FileViewer
                     fileType={extension}
-                    filePath={imageURL+imageFile}
+                    filePath={url}
                     onError={onError}
                 />  
             </FullScreen> 
@@ -306,42 +316,11 @@ const ModalComponent = ({title, data, type}) => {
                 Fullscreen
             </Button> 
             <p><strong>Job Title: </strong>{author?author.jobTitle:''}</p>
-            <p><strong>Name: </strong>{author?author.firsName+' '+author.lastName:''}</p>
+            <p><strong>Name: </strong>{author?author.firstName+' '+author.lastName:''}</p>
             <p><strong>Email: </strong>{author?author.email:''}</p>
             <p><strong>Company: </strong>{author?author.companyName:''}</p>
         </Grid>
-    )  
-    
-    const linkButton = (
-        <Button onClick={() => {
-            let url = `${imageURL}${imageFile}`;            
-            let img = '<img src="'+url+'" alt="'+imageTitle+'">';
-            let m_title = "Attachments";
-            let header = '<html><head><title>' + m_title + '</title></head><body height="100%" width="100%">'
-            let popup = window.open();
-            popup.document.write(header);
-            popup.document.write(img);
-            popup.document.write('</body></html>');                     
-            popup.document.close();
-        }} variant="outlined" color="secondary" className={classes.button}>More Details</Button>
-        
-    )
-    const pdfURL = "https://ecotrak-documents-production.s3.us-east-2.amazonaws.com/img/uploads/documents/"
-    const linkButtonPDF = (
-        <Button onClick={() => {
-            let url = `${pdfURL}${imageFile}`;            
-            let img = '<embed src="'+url+'" height="100%" width="100%" type="application/pdf">';
-            let m_title = "Attachments";
-            let header = '<html><head><title>' + m_title + '</title></head><body height="100%" width="100%">'
-            let popup = window.open();
-            popup.document.write(header);
-            popup.document.write(img);
-            popup.document.write('</body></html>');                     
-            popup.document.close();
-        }} variant="outlined" color="secondary" className={classes.button}>More Details</Button>
-        
-    )    
-    
+    )       
     
     //History
     const bodyHistory = (

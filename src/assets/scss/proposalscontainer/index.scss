@@ -14,3 +14,11 @@
         display: block !important;
     }
 }
+.photo-viewer-container {
+    height: 100% !important;
+    width: 100% !important;
+    img {
+        height: 100% !important;
+        width: auto !important;
+    }
+}
