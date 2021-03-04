@@ -25,11 +25,11 @@ import {
     fetchPendingPOData, 
     fetchDetailsPOData,
     fetchAssignedToMePOData,
-    fetchAwaitingInvoices,
+    //fetchAwaitingInvoices,
     //fetchHistoryWOData,
     fetchNotesWOData,
     fetchAttachmentsPOData,
-    fetchWarrantyWOData,
+    //fetchWarrantyWOData,
     createNoteWOData,
     //updateWOStatus,
     //fetchServiceProviders,
@@ -278,14 +278,12 @@ class ProposalsBuilder extends Component {
         //userData = await this.props.fetchUsersInformation()
         //userId = userData.userdata.user.user_id    
         //Next line it's to develop in local     
-        userId = "2152"
+        userId = "2146"
         this.setState({ 
             firstLoading: true
         })
         ctadata = await this.props.fetchCTAsData()
         tmpdata = await this.props.fetchAssignedToMePOData() 
-        let test =  await this.props.fetchOpenPOData()
-        console.log(test)
         if(tmpdata.data.response!==undefined) {
             this.sortWOByCreatedDate(tmpdata.data.response);
             tmpDataAmount = tmpdata.data.response.length
@@ -394,7 +392,7 @@ class ProposalsBuilder extends Component {
                         break;
                     case 4:
                         searchedResult = data.filter((term) => {
-                            return term['status']?term['status'].toString().toLowerCase().includes(searchTerm.toLowerCase()):false
+                            return term['storeNumber']?term['storeNumber'].toString().toLowerCase().includes(searchTerm.toLowerCase()):false
                         })
                         break;
                     default:
@@ -426,6 +424,8 @@ class ProposalsBuilder extends Component {
                 }
                 return dataSearch;
             }
+
+            
             let tmp
             let dataSearch
             let dataSearchTemp
@@ -438,75 +438,66 @@ class ProposalsBuilder extends Component {
                      */
                     //Each case should be the CTA id                  
                     case "assignedPO":
-                    tmp = await this.props.fetchAssignedToMePOData()
-                    dataSearch = tmp.data?tmp.data.response:[] 
-
-                    if(searchTermIn.length>3) {
-                        dataSearch = searchData(searchTerm, searchBy, dataSearch)
-                        // if(searchByIn<=1) {
-                        //     dataSearch = dataSearch.filter(term => term['proposalId'].toString().includes(searchTerm))
-                        // } else {
-                        //     let tmpl = searchData(searchTerm, dataSearch, searchBy);
-                        //     // dataSearchTemp = tmpl.data?tmpl.data.response:[]
-                        //     dataSearch = tmpl.data?tmpl.data.response:[]
-                        //     // dataSearch = dataSearch.filter(term => JSON.stringify(dataSearchTemp).includes(JSON.stringify(term)));
-                        // }           
-                    }
-                    dataSearch = filterData({
-                        dataSearch,
-                        filterByInByLocationName,
-                        filterByInByStatus,
-                        filterByInByCategory
-                    });
-                    tmpdata = {
-                        data: {
-                            response: dataSearch
+                        tmp = await this.props.fetchAssignedToMePOData()
+                        dataSearch = tmp.data?tmp.data.response:[] 
+                        if(searchTermIn.length>3) {
+                            if(searchByIn<5) {
+                                dataSearch = searchData(searchTerm, searchBy, dataSearch)
+                            } else {
+                                let tmpl = await this.props.fetchSearchData();
+                                dataSearchTemp = tmpl.data?tmpl.data.response:[]                         
+                                dataSearch = dataSearchTemp
+                            }          
                         }
-                    }
+                        dataSearch = filterData({
+                            dataSearch,
+                            filterByInByLocationName,
+                            filterByInByStatus,
+                            filterByInByCategory
+                        });
+                        tmpdata = {
+                            data: {
+                                response: dataSearch
+                            }
+                        }
                     
                     break;
                     case "pendingPO":
-                    tmp = await this.props.fetchPendingPOData()
-                    dataSearch = tmp.data?tmp.data.response:[] 
-
-                    if(searchTermIn.length>3) {
-                        dataSearch = searchData(searchTerm, searchBy, dataSearch)
-                        // if(searchByIn<=1) {
-                        //     dataSearch = dataSearch.filter(term => term['proposalId'].toString().includes(searchTerm))
-                        // } else {
-                        //     let tmpl = searchData(searchTerm, dataSearch, searchBy);
-                        //     // dataSearchTemp = tmpl.data?tmpl.data.response:[]
-                        //     dataSearch = tmpl.data?tmpl.data.response:[]
-                        //     // dataSearch = dataSearch.filter(term => JSON.stringify(dataSearchTemp).includes(JSON.stringify(term)));
-                        // }           
-                    }
-                    dataSearch = filterData({
-                        dataSearch,
-                        filterByInByLocationName,
-                        filterByInByStatus,
-                        filterByInByCategory
-                    });
-                    tmpdata = {
-                        data: {
-                            response: dataSearch
+                        tmp = await this.props.fetchPendingPOData()
+                        dataSearch = tmp.data?tmp.data.response:[] 
+                        if(searchTermIn.length>3) {
+                            if(searchByIn<5) {
+                                dataSearch = searchData(searchTerm, searchBy, dataSearch)
+                            } else {
+                                let tmpl = await this.props.fetchSearchData();
+                                dataSearchTemp = tmpl.data?tmpl.data.response:[]                         
+                                dataSearch = dataSearchTemp
+                            }          
                         }
-                    }
+                        dataSearch = filterData({
+                            dataSearch,
+                            filterByInByLocationName,
+                            filterByInByStatus,
+                            filterByInByCategory
+                        });
+                        tmpdata = {
+                            data: {
+                                response: dataSearch
+                            }
+                        }
                     
                     break;                                                      
                     case "awaitingInvoice":
                         tmp = await this.props.fetchAwaitingInvoices()
                         dataSearch = tmp.data?tmp.data.response:[] 
-    
                         if(searchTermIn.length>3) {
-                            dataSearch = searchData(searchTerm, searchBy, dataSearch)
-                            // if(searchByIn<=1) {
-                            //     dataSearch = dataSearch.filter(term => term['proposalId'].toString().includes(searchTerm))
-                            // } else {
-                            //     let tmpl = searchData(searchTerm, dataSearch, searchBy);
-                            //     // dataSearchTemp = tmpl.data?tmpl.data.response:[]
-                            //     dataSearch = tmpl.data?tmpl.data.response:[]
-                            //     // dataSearch = dataSearch.filter(term => JSON.stringify(dataSearchTemp).includes(JSON.stringify(term)));
-                            // }           
+                            if(searchByIn<5) {
+                                dataSearch = searchData(searchTerm, searchBy, dataSearch)
+                            } else {
+                                let tmpl = await this.props.fetchSearchData();
+                                dataSearchTemp = tmpl.data?tmpl.data.response:[]                         
+                                dataSearch = dataSearchTemp
+                            }          
                         }
                         dataSearch = filterData({
                             dataSearch,
@@ -524,17 +515,14 @@ class ProposalsBuilder extends Component {
                     case "openPO":
                         tmp = await this.props.fetchOpenPOData()
                         dataSearch = tmp.data?tmp.data.response:[] 
-    
                         if(searchTermIn.length>3) {
-                            dataSearch = searchData(searchTerm, searchBy, dataSearch)
-                            // if(searchByIn<=1) {
-                            //     dataSearch = dataSearch.filter(term => term['proposalId'].toString().includes(searchTerm))
-                            // } else {
-                            //     let tmpl = searchData(searchTerm, dataSearch, searchBy);
-                            //     // dataSearchTemp = tmpl.data?tmpl.data.response:[]
-                            //     dataSearch = tmpl.data?tmpl.data.response:[]
-                            //     // dataSearch = dataSearch.filter(term => JSON.stringify(dataSearchTemp).includes(JSON.stringify(term)));
-                            // }           
+                            if(searchByIn<5) {
+                                dataSearch = searchData(searchTerm, searchBy, dataSearch)
+                            } else {
+                                let tmpl = await this.props.fetchSearchData();
+                                dataSearchTemp = tmpl.data?tmpl.data.response:[]                         
+                                dataSearch = dataSearchTemp
+                            }          
                         }
                         dataSearch = filterData({
                             dataSearch,
