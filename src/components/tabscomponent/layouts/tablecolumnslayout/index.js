@@ -38,6 +38,7 @@ export const TableColumns = ({ classes, columns, infotab }) => {
             )}
             style={{
                 flexBasis: column.width || false,
+                justifyContent: 'center',
                 height: rowsize
             }}
             scope="col"

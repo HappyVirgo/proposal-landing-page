@@ -5,8 +5,6 @@ import {
     STAGE,
     _STAGE 
 } from "../constants"
-//export const apiUsers = "http://localhost:8180/admin/Users/getCurrentUser"
-//export const apiUsers = "https://stage.ecotrak.com/admin/Users/getCurrentUser"
 export const apiUsers = "/admin/Users/getCurrentUser"
 
 //CTA Data

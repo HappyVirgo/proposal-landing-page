@@ -46,6 +46,28 @@ export const LinkActions = ({workOrderId, invoiceId, proposalId, assetId}) => {
                 color="primary" 
                 className={`${classes.linkButton} link-button`} 
                 onClick={
+                    () => {
+                        window.open(`${api_url}WorkOrders/work_order_details/${workOrderId}`, "_blank")
+                    }
+                }
+            >
+                Work Order
+            </Button>  
+            <Button
+                variant="contained" 
+                color="primary" 
+                className={`${classes.linkButton} link-button`}
+                onClick={
+                    () => window.open(`${api_url}Assets/view_assets/${assetId}`, "_blank")
+                }
+            >
+                Asset
+            </Button>                  
+            <Button
+                variant="contained"
+                color="primary" 
+                className={`${classes.linkButton} link-button`} 
+                onClick={
                     () => window.open(`${api_url}Proposals/proposal_details/${proposalId}`, "_blank")
                 }
             >
@@ -60,29 +82,6 @@ export const LinkActions = ({workOrderId, invoiceId, proposalId, assetId}) => {
                 }
             >
                 Invoice
-            </Button>
-            <Button
-                variant="contained"
-                color="primary" 
-                className={`${classes.linkButton} link-button`} 
-                onClick={
-                    () => {
-                        window.open(`${api_url}WorkOrders/work_order_details/${workOrderId}`, "_blank")
-                    }
-                }
-            >
-                Work Order
-            </Button>
-
-            <Button
-                variant="contained" 
-                color="primary" 
-                className={`${classes.linkButton} link-button`}
-                onClick={
-                    () => window.open(`${api_url}Assets/view_assets/${assetId}`, "_blank")
-                }
-            >
-                Asset
             </Button>
             {/* <Button
                 variant="contained"

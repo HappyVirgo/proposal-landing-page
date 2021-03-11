@@ -69,6 +69,9 @@ const useTableStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center'
     },
+    documentCell: {
+        justifyContent: 'center',
+    },
     dtableCols: {
         width: "100%",
         height: "100%",
