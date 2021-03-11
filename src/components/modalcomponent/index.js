@@ -14,6 +14,7 @@ import { Button, Divider } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
+import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser'
 import CommentIcon from '@material-ui/icons/Comment'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -97,7 +98,10 @@ const useStyles = makeStyles((theme) => ({
     },
     FullScreen: {
         marginTop: "25px"
-    }   
+    },
+    padding5: {
+        paddding: '5px !important'
+    }
 }));
 
 const ModalComponent = ({title, data, type}) => {
@@ -130,9 +134,11 @@ const ModalComponent = ({title, data, type}) => {
     )
 
     const buttonAttachments = (
-        <Button variant="outlined" color="secondary" onClick={handleOpen} className={classes.button}>
-            More Info
-        </Button>
+        <Tooltip title="More Info">
+            <IconButton aria-label="More Info" onClick={handleOpen} className={classes.padding5} >
+                <OpenInBrowserIcon color="secondary" />
+            </IconButton>
+        </Tooltip>
     )  
     
     //vars
@@ -278,7 +284,6 @@ const ModalComponent = ({title, data, type}) => {
                 <p><strong>Company: </strong>{company}</p>
                 <p><strong>Name: </strong>{firstName} {lastName}</p>  
                 <p><strong>Created date: </strong><span className={classes.date}><Moment format="MMMM D, YYYY hh:mm a">{createdDate}</Moment></span></p>
-                {/*<p><strong>Updated At: </strong><span className={classes.date}><Moment format="MMMM D, YYYY hh:mm a">{updatedDate}</Moment></span></p>*/}
                 {recipients.length>0?RecipientsTable:""}
         </Grid>
     )

@@ -241,6 +241,10 @@
     }
 }
 
+.padding5 {
+    padding: 5px !important;
+}
+
 //Icons
 .add-note-icon {
     @include action-icons;

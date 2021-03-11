@@ -30,7 +30,8 @@ export const MainDetails = ({
     assetModel,
     assetSerial,
     manufacturer,
-    location
+    location,
+    locationDetailsStore
     }) => {
     const classes = useStyles()
     let warrantyBadge
@@ -51,10 +52,11 @@ export const MainDetails = ({
             <Typography variant="h1" className={classes.Typography}>
                 {assetName!==undefined?(assetName!==null?assetName:proposalId):proposalId} <br/><small>{assetType}</small>
             </Typography>
+            <Typography>Store #: {locationDetailsStore}</Typography>
             <Typography>Location: {location}</Typography>
-            <Typography>Manufacturer: {manufacturer}</Typography>
             <Typography>Model #: {assetModel}</Typography>
-            <Typography>Serial #: {assetSerial}</Typography>
+            <Typography>Serial #: {assetSerial}</Typography>            
+            <Typography>Manufacturer: {manufacturer}</Typography>
             {/*<Typography>Asset Type: {assetType}</Typography>*/}
             <div className={classes.warrantyBox}>
                 <Typography className={warrantyBadge}>Warranty: </Typography>

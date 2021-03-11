@@ -125,10 +125,11 @@ export const RenderNotNull = ({
             other = validator(detailsdata.data.response.other)
             total = validator(detailsdata.data.response.total)
 
-            locationDetailsStore = validator(detailsdata.data.response.location)!==""?validator(detailsdata.data.response.location.storeNumber):""
+            locationDetailsStore = validator(detailsdata.data.response.asset.location)!==""?validator(detailsdata.data.response.asset.location.storeNumber):""
             location = validator(detailsdata.data.response.location)!==""?validator(detailsdata.data.response.location.name):""
             address = validator(detailsdata.data.response.location)!==""?validator(detailsdata.data.response.location.fullAddress):""
             phoneNumber = validator(detailsdata.data.response.location)!==""?validator(detailsdata.data.response.location.phone1):""
+            console.log(locationDetailsStore)
 
             
     }
@@ -154,7 +155,8 @@ export const RenderNotNull = ({
                     warrantyLabel={warrantyLabel}
                     assetModel={assetModel}
                     assetSerial={assetSerial}   
-                    manufacturer={manufacturer}                
+                    manufacturer={manufacturer} 
+                    locationDetailsStore={locationDetailsStore}                                   
                     
                 />
                 {/*<MainActions

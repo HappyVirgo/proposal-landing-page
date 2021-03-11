@@ -26,7 +26,7 @@ const ROW_SIZE = 50;
 //Building rows
 export const Row = ({ index, style, data: { columns, items, classes } }) => {
     const item = items[index];
-    console.log(item)
+    //console.log(item)
     return (
         <TableRow className={classes.row} style={style} component="div">
             {columns.map((column, colIndex) => {
@@ -75,7 +75,8 @@ export const Row = ({ index, style, data: { columns, items, classes } }) => {
                     align={column.numeric || false ? "right" : "left"}
                     className={clsx(
                         classes.cell,
-                        !column.width && classes.expandingCell
+                        !column.width && classes.expandingCell,
+                        typeOfTab==='document'?classes.documentCell:'',
                     )}
                     style={{
                         flexBasis: column.width || false,
